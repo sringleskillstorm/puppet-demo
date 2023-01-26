@@ -30,20 +30,10 @@ function srvTime(){
     return xmlHttp.getResponseHeader("Date");
 }
 
-//var st = srvTime();
-//var date = new Date(st);
-
-function display_c(){
-var refresh=1000; // Refresh rate in milli seconds
-mytime=setTimeout('display_ct()',refresh)
-}
-
 function display_ct() {
-var strcount
 var st = srvTime();
 var x = new Date(st);                       //new Date()
 document.getElementById('ct').innerHTML = x;
-tt=display_c();
 }
 </script>
 </head>
