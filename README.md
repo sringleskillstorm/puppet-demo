@@ -144,16 +144,36 @@ Then, download the necessary AWS module and retries gems. Note that the retries 
 /opt/puppetlabs/bin/puppet module install puppetlabs-aws
 ```
 
-Once these are done installing, you may restart your puppetserver service.
+Since the AWS module will look through all regions by default, we'll need to change the default to only look through our region. Using the text editor of your choice, add this to the /etc/puppetlabs/puppet/puppetlabs_aws_configuration.ini file:
 ```
-systemctl start puppetserver
+[default]
+region = us-east-1
 ```
 
-Alternatively, if you doing this demo on its own, set up a primary puppet server without running the service, install the retries gems and AWS module, and then start the puppetserver service.
+Lastly, update your primary server's IAM role to be EC2PuppetResourceCreation. This follows the IAM role specified at https://github.com/puppetlabs-toy-chest/puppetlabs-aws/tree/master/examples/iam-profile.
+
+
+Alternatively, if you doing this demo on its own, set up a primary puppet server (remembering to specify the IAM role!) without running the puppetserver service and perform the necessary downloads and .ini file changes. Then start the puppetserver service. Skip step 1b to Step 2.
+
+### Step 1b:
+Once these are done installing, you will need to restart your puppetserver service. However, this will result in issues with your SSL certificates since the root CA has been reset, invalidating previous certificates.
+
+To fix this, we'll wipe our CA and start over again:
+```
+puppet resource service puppet ensure=stopped
+puppet resource service puppetserver ensure=stopped
+rm -r /etc/puppetlabs/puppet/ssl
+rm -r /etc/puppetlabs/puppetserver/ca
+puppetserver ca setup
+puppet resource service puppet ensure=running
+puppet resource service puppetserver ensure=running
+```
+
+For more details on SSL certificate fixes, see: https://www.puppet.com/docs/puppet/7/ssl_regenerate_certificates.html
+
 
 ### Step 2:
-After the installations are done, we're going to change our manifest file to use AWS infrastructure:
-```
-curl https://raw.githubusercontent.com/sringleskillstorm/puppet-demo/main/aws_infrastructure_demo.pp > /etc/puppetlabs/code/environments/production/manifests/site.pp
-```
+After the installations are done, we're going to change our manifest file to use AWS infrastructure. While we follow the structure of 
+https://raw.githubusercontent.com/sringleskillstorm/puppet-demo/main/aws_infrastructure_demo.pp in the /etc/puppetlabs/code/environments/production/manifests/site.pp file, MAKE SURE TO CHANGE THE KEY TO YOUR OWN IF YOU WISH TO SSH.
 
+After the run interval, we will see the new infrastructure up and running! While you can't delete the services directly, you can terminate them by changing the ensure => running to ensure => absent.
