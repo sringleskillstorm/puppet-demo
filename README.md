@@ -106,3 +106,45 @@ Back on the primary server, we'll need to install the apache module:
 ```
 /opt/puppetlabs/bin/puppet module install puppetlabs-apache
 ```
+
+### Step 9:
+Once we have the relevant module installed, we can add in a configuration file into the production manifests branch of the hierarchy:
+```
+curl https://raw.githubusercontent.com/sringleskillstorm/puppet-demo/main/version_demo.pp > /etc/puppetlabs/code/environments/production/manifests/site.pp
+```
+
+To test that this worked, we can visit the agent at its public address. Note that this may take a few minutes to actually change since the run interval is 3 min. If you want to speed this up, run the following from the agent:
+
+```
+puppet agent -t
+```
+
+### Step 10:
+Let's prove the self healing part of Puppet. Let's mess up our website and then see if Puppet fixes it in the given time frame.
+
+Using your code editor of choice, change the file at /var/www/html/index.html. Alternatively, delete the file altogther with the rm command.
+
+After the run interval, your code will be back to the GitHub version.
+
+Similarly, if we change the config file to use the v2 website file on GitHub, we'll get the V2 version.
+
+##Demo 2: Using the AWS module
+If you're coming right from Demo 1, you may terminate your agent instance.
+
+###Step 1:
+Stop the puppetserver service on your primary server by running the following:
+
+```
+systemctl stop puppetserver
+```
+
+Then, download the necessary AWS module and retries gems. Note that the retries gems take awhile (~10 min.).
+```
+/opt/puppetlabs/puppet/bin/gem install aws-sdk retries
+/opt/puppetlabs/bin/puppet module install puppetlabs-aws
+```
+
+Once these are done installing, you may restart your puppetserver service.
+```
+systemctl start puppetserver
+```
