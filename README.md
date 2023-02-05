@@ -132,7 +132,7 @@ Similarly, if we change the config file to use the v2 website file on GitHub, we
 If you're coming right from Demo 1, you may terminate your agent instance.
 
 ### Step 1:
-Stop the puppetserver service on your primary server by running the following:
+If you are coming right from Demo 1, stop the puppetserver service on your primary server by running the following:
 
 ```
 systemctl stop puppetserver
@@ -148,3 +148,7 @@ Once these are done installing, you may restart your puppetserver service.
 ```
 systemctl start puppetserver
 ```
+
+Alternatively, if you doing this demo on its own, set up a primary puppet server without running the service, install the retries gems and AWS module, and then start the puppetserver service.
+
+### Step 2:
