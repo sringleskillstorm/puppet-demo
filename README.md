@@ -152,3 +152,8 @@ systemctl start puppetserver
 Alternatively, if you doing this demo on its own, set up a primary puppet server without running the service, install the retries gems and AWS module, and then start the puppetserver service.
 
 ### Step 2:
+After the installations are done, we're going to change our manifest file to use AWS infrastructure:
+```
+curl https://raw.githubusercontent.com/sringleskillstorm/puppet-demo/main/aws_infrastructure_demo.pp > /etc/puppetlabs/code/environments/production/manifests/site.pp
+```
+
