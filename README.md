@@ -128,10 +128,10 @@ After the run interval, your code will be back to the GitHub version.
 
 Similarly, if we change the config file to use the v2 website file on GitHub, we'll get the V2 version.
 
-##Demo 2: Using the AWS module
+## Demo 2: Using the AWS module
 If you're coming right from Demo 1, you may terminate your agent instance.
 
-###Step 1:
+### Step 1:
 Stop the puppetserver service on your primary server by running the following:
 
 ```
