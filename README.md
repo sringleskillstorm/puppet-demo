@@ -39,6 +39,9 @@ puppet config set server use_hostname_of_server_here
 puppet config set ca_server use_hostname_of_server_here
 ```
 
+Next, we'll need to update the memory size of the puppetserver so that we don't run out of memory. Update /ect/sysconfig/puppetserver so that we don't run out of memory by changing JAVA_ARGS="-Xms2g -Xmx2g ..." to be JAVA_ARGS="-Xms1g -Xmx1g ..." instead. 
+
+
 ### Step 4:
 Now that we've updated the server's settings, let's start up the puppet server service:
 ```
